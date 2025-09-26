@@ -4,15 +4,14 @@ from aiogram.types import BotCommand, BotCommandScopeChat, BotCommandScopeDefaul
 from app.config import Config
 
 users_commands = {
-    "start": "Start bot",
-    "integrate": "Integrate repository",
-    "integrations": "Show integrated repositories",
-    "delete": "Delete integration",
-    "token": "Set GitHub token",
-    "set_topic": "Set notification topic",
-    "events": "Setup chat events",
+    "start": "🚀 Запуск бота",
+    "integrate": "🔗 Интеграция репозитория",
+    "integrations": "📂 Показать все интеграции",
+    "delete": "🗑 Удалить интеграцию",
+    "token": "🔑 Задать GitHub токен",
+    "set_topic": "📢 Установить тему уведомлений",
+    "events": "❄️ Настроить события чата",
 }
-
 
 async def setup_bot_commands(bot: Bot, config: Config):
     await bot.set_my_commands(
@@ -23,9 +22,8 @@ async def setup_bot_commands(bot: Bot, config: Config):
         scope=BotCommandScopeDefault(),
     )
 
-
 async def remove_bot_commands(bot: Bot, config: Config):
     await bot.delete_my_commands(scope=BotCommandScopeDefault())
     await bot.delete_my_commands(
         scope=BotCommandScopeChat(chat_id=config.settings.owner_id)
-    )
+                                )
