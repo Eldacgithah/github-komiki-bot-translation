@@ -23,9 +23,9 @@ async def migrate_models(tortoise_config: dict):
 
 async def init_orm(tortoise_config: dict) -> None:
     await Tortoise.init(config=tortoise_config)
-    logging.info(f"Tortoise-ORM started, {Tortoise.apps}")
+    logging.info(f"Tortoise-ORM запущен, приложения: {Tortoise.apps}")
 
 
 async def close_orm() -> None:
     await Tortoise.close_connections()
-    logging.info("Tortoise-ORM shutdown")
+    logging.info("Tortoise-ORM остановлен")
