@@ -1,26 +1,8 @@
-# github-notifi-bot
+# github-komiki-bot-translation
 
-## Description
+> Это простой бот, который отправляет уведомления о новых issue, коммитах, звёздах и других событиях в репозитории.  
+> Написан на Python и использует GitHub API.
+> Бот работает на основе логики вебхуков, что позволяет быстро получать обновления.
+> Этот проект создан для упрощённого отслеживания активности в GitHub-репозиториях и автоматического уведомления пользователей.
 
-This is a simple bot that will notify you when a new issue, commits, stars, etc. are made on a repository. It is written in Python and uses the Github API.
-
-Based on webhooks logic.
-
-## Screenshots
-
-![Screenshot](.github/images/actions.png)
-
-Action messages example
-
----
-
-![Screenshot](.github/images/list.png)
-
-List of repositories integrated with the bot in chat
-
-
-## TODO
-
-- [ ] Add more actions (e.g. issue comments, etc.)
-- [ ] Add chat events settings (e.g. enable/disable events)
-- [ ] Add stats admin command
+> Этот репозиторий является переводом и форком оригинального проекта github-notifi-bot.
