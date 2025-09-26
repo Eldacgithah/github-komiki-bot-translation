@@ -9,6 +9,11 @@ from app.config import Config
 
 class ThrottlingMiddleware(BaseMiddleware):
 
+    """
+    Мидлвар для ограничения частоты обработки сообщений (throttling).
+    Использует TTLCache, чтобы хранить время последнего обращения от чата.
+    """
+
     def __init__(self, config: Config):
         self.cache = TTLCache(maxsize=10_000, ttl=config.settings.throttling_rate)
 
@@ -25,5 +30,8 @@ class ThrottlingMiddleware(BaseMiddleware):
 
 
 def register_middleware(dp: Dispatcher, config: Config):
+    """
+    Регистрирует мидлвар throttling в диспетчере.
+    """
     throttling_middleware = ThrottlingMiddleware(config=config)
     dp.message.middleware(throttling_middleware)
