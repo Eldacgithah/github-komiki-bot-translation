@@ -4,16 +4,14 @@ from app.webhook.api import router as handlers_router
 import uvicorn
 
 
-def dispatcher():
+def диспетчер():
     app = FastAPI()
     app.include_router(router=handlers_router, prefix="/webhook")
 
     @app.get("/")
-    async def root():
+    async def корень():
         return {
-            "message": "Hello World",
+            "message": "Привет мир",
         }
 
     uvicorn.run(app, host="0.0.0.0", port=4454)
-
-    # return app
