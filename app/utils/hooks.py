@@ -2,17 +2,11 @@ from github import Auth, Github
 from github import GithubException
 
 
-def create_webhook(
-    host: str,
-    endpoint: str,
-    gh_token: str,
-    integration: str,
-):
+def create_webhook(host: str, endpoint: str, gh_token: str, integration: str):
     """
-    Creates a webhook for the specified repository.
-    This is a programmatic approach to creating webhooks with PyGithub's API. If you wish, this can be done
-    manually at your repository's page on Github in the "Settings" section. There is a option there to work with
-    and configure Webhooks.
+    🔗 Создаёт webhook для указанного репозитория.
+    Это программный способ создания webhook через PyGithub API.
+    Можно сделать вручную в разделе "Settings" репозитория на GitHub.
     """
 
     config = {
@@ -23,7 +17,7 @@ def create_webhook(
         auth = Auth.Token(gh_token)
         g = Github(auth=auth)
     except GithubException as e:
-        return {"message": "Error authenticating with Github, is your token expired? (rewrite the token)", "error": e.data}
+        return {"message": "❌ Ошибка аутентификации в Github, возможно токен устарел.", "error": e.data}
 
     events = ["push", "pull_request", "issues", "fork", "star"]
 
@@ -31,15 +25,13 @@ def create_webhook(
         repo = g.get_repo(integration)
         repo.create_hook("web", config, events, active=True)
     except GithubException as e:
-        return {"message": "Error creating webhook, please check your token rights.", "error": e.data}
+        return {"message": "❌ Ошибка при создании webhook, проверьте права токена.", "error": e.data}
 
 
 def validate(token: str):
     """
-    Validates the specified Github token.
-    This is a programmatic approach to validating tokens with PyGithub's API. If you wish, this can be done
-    manually at your profile's page on Github in the "Settings" section. There is a option there to work with
-    and configure Personal Access Tokens.
+    ✅ Валидирует указанный Github токен.
+    Можно сделать вручную в разделе "Settings" на GitHub.
     """
 
     if not token.startswith("ghp_"):
@@ -56,53 +48,43 @@ def validate(token: str):
     except GithubException:
         return False
 
-    # try:
-    #    g.add_to_subscriptions("vsecoder/github-notifi-bot")
-    # except GithubException:
-    #    pass
-
     return True
 
 
 def get_repos(token: str):
     """
-    Returns a list of repositories for the specified user.
-    This is a programmatic approach to getting a list of repositories with PyGithub's API. If you wish, this can be done
-    manually at your repository's page on Github in the "Settings" section. There is a option there to work with
-    and configure Webhooks.
+    📜 Возвращает список репозиториев пользователя.
+    Использует PyGithub API.
     """
 
     try:
         auth = Auth.Token(token)
         g = Github(auth=auth)
     except GithubException as e:
-        return {"message": "Error authenticating with Github.", "error": e.data}
+        return {"message": "❌ Ошибка аутентификации в Github.", "error": e.data}
 
     try:
         repos = g.get_user().get_repos()
     except GithubException as e:
-        return {"message": "Error getting repositories.", "error": e.data}
+        return {"message": "❌ Ошибка получения репозиториев.", "error": e.data}
 
     return repos
 
 
 def check_repo(token: str, repo: str):
     """
-    Returns a list of repositories for the specified user.
-    This is a programmatic approach to getting a list of repositories with PyGithub's API. If you wish, this can be done
-    manually at your repository's page on Github in the "Settings" section. There is a option there to work with
-    and configure Webhooks.
+    🔍 Проверяет существование репозитория пользователя.
     """
 
     try:
         auth = Auth.Token(token)
         g = Github(auth=auth)
     except GithubException as e:
-        return {"message": "Error authenticating with Github.", "error": e.data}
+        return {"message": "❌ Ошибка аутентификации в Github.", "error": e.data}
 
     try:
         repos = g.get_repo(repo)
     except GithubException as e:
-        return {"message": "Error getting repositories.", "error": e.data}
+        return {"message": "❌ Ошибка получения репозитория.", "error": e.data}
 
     return repos
