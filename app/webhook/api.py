@@ -44,7 +44,7 @@ def build_message(event: str, payload: dict, user_token: str | None) -> str | No
         case "fork":
             return fork_message(payload)
         case _:
-            return f"Unknown event: {event}"
+            return f"Неизвестное событие: {event}"
 
 
 def send_message(chat_id: int, topic_id: int | None, text: str) -> None:
@@ -64,7 +64,7 @@ def send_message(chat_id: int, topic_id: int | None, text: str) -> None:
             timeout=3,
         )
     except requests.RequestException as e:
-        print(f"Error sending to chat {chat_id}: {e}")
+        print(f"Ошибка отправки в чат {chat_id}: {e}")
 
 
 @router.post("/{token}")
@@ -73,14 +73,14 @@ async def webhook(req: Request, token: str, X_GitHub_Event: str = Header()):
     integrations = await Integration.get_by_token(token)
 
     if not integrations:
-        return {"message": "No integrations found!"}
+        return {"message": "Интеграции не найдены!"}
 
     for integration in integrations:
         chat = integration.chat
         user = integration.user
 
-        #if not await EventSetting.is_enabled(chat, X_GitHub_Event):
-        #    continue
+        # if not await EventSetting.is_enabled(chat, X_GitHub_Event):
+        #     continue
 
         if X_GitHub_Event == "star" and check_floodwait(chat.chat_id, chat.floodwait):
             continue
@@ -89,4 +89,4 @@ async def webhook(req: Request, token: str, X_GitHub_Event: str = Header()):
         if message:
             send_message(chat.chat_id, chat.topic_id, message)
 
-    return {"message": "Webhook processed for all integrations."}
+    return {"message": "Webhook обработан для всех интеграций."}
