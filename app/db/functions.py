@@ -212,7 +212,6 @@ class EventSetting(models.Model):
 
     @classmethod
     async def is_enabled(cls, chat: Chat, event_type: models.EventType) -> bool:
-        # setting = await cls.get_or_none(chat=chat, event_type=event_type)
         setting = await cls.filter(event_type=event_type).prefetch_related("chat")
         setting = [s for s in setting if s.chat == chat]
         return setting[0].enabled if setting else False
