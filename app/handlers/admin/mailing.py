@@ -8,25 +8,24 @@ from app.config import Config
 
 router = Router()
 
-
 @router.message(Command(commands=["mail"]))
 async def mail_handler(message: Message, bot: Bot, config: Config):
     if message.chat.id != config.settings.owner_id:
-        return await message.answer("This command can only be used by the bot owner.")
+        return await message.answer("🚫 Эта команда доступна только владельцу бота.")
 
     args = message.text.split(maxsplit=2)
 
     if len(args) < 2:
-        return await message.answer("Usage:\n/mail [users|chats|all] <message>")
+        return await message.answer("ℹ️ Использование:\n/mail [users|chats|all] <сообщение>")
 
     target = args[1].lower()
     text = args[2] if len(args) > 2 else ""
 
     if not text:
-        return await message.answer("You must provide a message to send.")
+        return await message.answer("⚠️ Вы должны указать сообщение для отправки.")
 
     if target not in ["users", "chats", "all"]:
-        return await message.answer("Invalid target. Use 'users', 'chats' or 'all'.")
+        return await message.answer("❌ Неверный параметр. Используйте 'users', 'chats' или 'all'.")
 
     users = await User.all() if target in ["users", "all"] else []
     chats = await Chat.all() if target in ["chats", "all"] else []
@@ -34,7 +33,7 @@ async def mail_handler(message: Message, bot: Bot, config: Config):
     recipients_users = [u.telegram_id for u in users]
     recipients_chats = [{"id": c.chat_id, "topic": c.topic_id} for c in chats]
 
-    await message.answer(f"Broadcast started.\nTotal recipients: {len(recipients_users) + len(recipients_chats)}")
+    await message.answer(f"📢 Рассылка начата.\nВсего получателей: {len(recipients_users) + len(recipients_chats)}")
 
     sent_users = 0
     sent_chats = 0
@@ -59,4 +58,4 @@ async def mail_handler(message: Message, bot: Bot, config: Config):
         except TelegramAPIError:
             continue
 
-    await message.answer(f"Broadcast finished.\nSuccessfully delivered to {sent_users} users and {sent_chats} chats.")
+    await message.answer(f"✅ Рассылка завершена.\nУспешно отправлено: {sent_users} пользователям и {sent_chats} чатам.")
